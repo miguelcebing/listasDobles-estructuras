@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetroLine · Doubly linked list in action</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <h1>MetroLine</h1>
+      <p class="subtitle">Doubly linked list in action</p>
+    </div>
+    <div class="counter" aria-live="polite">
+      <span class="counter-number" id="stationCount">0</span>
+      <span class="counter-label">stations</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ THE LINE ============ -->
+    <section class="line-zone" aria-label="Metro line">
+      <div class="line-scroll" id="lineScroll">
+        <div class="line-track" id="lineTrack">
+          <!-- stations are rendered here by app.js -->
+        </div>
+      </div>
+      <p class="empty-state" id="emptyState" hidden>
+        The line is empty. Add a station below to get started.
+      </p>
+    </section>
+
+    <!-- ============ TRAIN CONTROLS ============ -->
+    <section class="controls" aria-label="Train controls">
+      <button class="btn btn-move" id="btnPrevious" aria-label="Move train to previous station">
+        &#9664; Previous
+      </button>
+      <label class="goto-label" for="gotoSelect">Go to&hellip;</label>
+      <select id="gotoSelect" class="goto-select" aria-label="Jump the train to a station">
+        <option value="">Select a station</option>
+      </select>
+      <button class="btn btn-move" id="btnNext" aria-label="Move train to next station">
+        Next &#9654;
+      </button>
+      <button class="btn btn-reverse" id="btnReverse" aria-label="Reverse the line direction">
+        &#8646; Reverse line
+      </button>
+    </section>
+
+    <!-- ============ BOTTOM: CONTROL + MEMORY VIEW ============ -->
+    <section class="panels">
+      <!-- ---------- Line control ---------- -->
+      <article class="card">
+        <h2>Line control</h2>
+
+        <form id="addForm" class="add-form" novalidate>
+          <div class="field">
+            <label for="stationName">Station name</label>
+            <input type="text" id="stationName" maxlength="30"
+                   placeholder="e.g. Harbor Point" autocomplete="off" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="stationZone">Zone</label>
+              <select id="stationZone">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="stationPosition">Position</label>
+              <select id="stationPosition">
+                <option value="end">At the end</option>
+                <option value="start">At the start</option>
+                <option value="after">After&hellip;</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" id="afterField" hidden>
+            <label for="afterSelect">After station</label>
+            <select id="afterSelect">
+              <option value="">Select a station</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">+ Add station</button>
+        </form>
+
+        <form id="searchForm" class="search-form">
+          <div class="field">
+            <label for="searchName">Search station</label>
+            <div class="search-row">
+              <input type="text" id="searchName" placeholder="Station name" autocomplete="off">
+              <button type="submit" class="btn btn-ghost" aria-label="Search">Search</button>
+            </div>
+          </div>
+        </form>
+
+        <h3>Stations</h3>
+        <ul class="station-list" id="stationList"></ul>
+      </article>
+
+      <!-- ---------- Memory view ---------- -->
+      <article class="card memory-card">
+        <h2>Memory view</h2>
+        <p class="memory-hint">Hover a station to inspect its node.</p>
+
+        <div class="node-box" id="nodeBox">
+          <div class="node-row node-prev">
+            <span class="node-label">prev</span>
+            <button class="chip chip-prev" id="prevChip" type="button">&larr; None</button>
+          </div>
+          <div class="node-row node-data">
+            <span class="node-label">data</span>
+            <span class="node-data-value" id="dataChip">No station selected</span>
+          </div>
+          <div class="node-row node-next">
+            <span class="node-label">next</span>
+            <button class="chip chip-next" id="nextChip" type="button">None &rarr;</button>
+          </div>
+        </div>
+
+        <div class="meta-row" id="metaRow">
+          <span>head: <strong id="metaHead">&mdash;</strong></span>
+          <span>tail: <strong id="metaTail">&mdash;</strong></span>
+          <span>size: <strong id="metaSize">0</strong></span>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" id="tabForward" role="tab" aria-selected="true">Forward</button>
+          <button class="tab" id="tabBackward" role="tab" aria-selected="false">Backward</button>
+        </div>
+        <div class="traversal" id="traversal"></div>
+      </article>
+    </section>
+  </main>
+
+  <!-- ============ TOASTS ============ -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
